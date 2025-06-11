@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load widget_tweaks %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment</title>
+</head>
+<body>
+    
+
+<!-- templates/assesment.html (improved form structure) -->
+<div class="form-container">
+  <form method="post" action="{% url 'home' %}">
+      {% csrf_token %}
+      
+      {% if form.non_field_errors %}
+      <div class="alert alert-danger">
+          {{ form.non_field_errors }}
+      </div>
+      {% endif %}
+
+      <div class="row g-3">
+          {% for field in form %}
+          <div class="col-md-6">
+              <label for="{{ field.id_for_label }}" class="form-label{% if field.field.required %} field-required{% endif %}">
+                  {{ field.label }}
+              </label>
+              {{ field|add_class:"form-control" }}
+              {% if field.help_text %}
+              <small class="form-text text-muted">{{ field.help_text }}</small>
+              {% endif %}
+              {% for error in field.errors %}
+              <div class="invalid-feedback d-block">{{ error }}</div>
+              {% endfor %}
+          </div>
+          {% endfor %}
+      </div>
+
+      <div class="mt-4">
+          <button type="submit" class="btn btn-primary w-100">Submit Assessment</button>
+      </div>
+  </form>
+</div>
+
+
+</body>
+</html>
+

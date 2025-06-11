@@ -1,0 +1,467 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg py-2 fixed-top bg-white border-bottom">
+  <div class="container">
+    <!-- Mobile View Only: Hamburger Left + Logo Center + Sign-in/Profile Right -->
+    <div class="d-flex d-lg-none align-items-center w-100">
+      <button
+        class="navbar-toggler hamburger-button shadow-none border-0"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+      >
+        <div class="hamburger-lines">
+          <span class="line line1"></span>
+          <span class="line line2"></span>
+          <span class="line line3"></span>
+        </div>
+      </button>
+      
+      <a class="navbar-brand fw-bold fs-3 gradient-text mx-auto" href="/">
+        🧠 MindMetrics
+      </a>
+      
+      <!-- Mobile: Sign-in button or Profile Image -->
+      <div class="mobile-auth-section">
+        {% if user.is_authenticated %}
+          <div class="dropdown">
+            <div data-bs-toggle="dropdown">
+              <img
+                src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default-avatar.png' %}{% endif %}"
+                class="profile-picture rounded-circle shadow-sm"
+                alt="Profile"
+                style="width: 36px; height: 36px; object-fit: cover"
+              />
+            </div>
+            <!-- Simplified Google-style Mobile Dropdown -->
+            <div class="dropdown-menu border-0 shadow-lg p-0 overflow-hidden" style="position: fixed; top: 56px; left: 0; width: 100vw; z-index: 1050;">
+              <!-- Profile Header Section -->
+              <div class="google-profile-header p-4 text-center bg-white">
+                <img
+                  src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default-avatar.png' %}{% endif %}"
+                  class="google-profile-picture rounded-circle mb-2"
+                  alt="Profile"
+                  style="width: 60px; height: 60px; object-fit: cover;"
+                />
+                <h6 class="mb-2 fw-bold">Hi, {{ user.username }}!</h6>
+                <a href="{% url 'profile' %}" class="btn btn-outline-primary rounded-pill btn-sm fw-medium w-100">
+                  Manage your account
+                </a>
+              </div>
+            
+              <!-- Sign Out Button -->
+              <div class="p-3 bg-light border-top">
+                <form method="post" action="{% url 'logout' %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger w-100 rounded-pill d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-box-arrow-right"></i> Sign out
+                  </button>
+                </form>
+              </div>
+            </div>
+            
+            
+          </div>
+        {% else %}
+          <a
+            class="btn btn-primary text-white px-3 rounded-pill mobile-sign-in"
+            href="{% url 'login' %}"
+          >
+            <span>Log in</span>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+    
+    <!-- Desktop View (Unchanged) -->
+    <a class="navbar-brand fw-bold fs-3 gradient-text hover-scale d-none d-lg-block" href="/">
+      🧠 MindMetrics
+    </a>
+    <button
+      class="navbar-toggler hamburger-button shadow-none border-0 d-none d-lg-block"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+    >
+      <div class="hamburger-lines">
+        <span class="line line1"></span>
+        <span class="line line2"></span>
+        <span class="line line3"></span>
+      </div>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="navbar-nav w-100 align-items-center">
+        <!-- Navigation Links -->
+        <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center flex-grow-1 gap-3 gap-lg-4">
+          <a
+            class="nav-link text-dark fw-bold position-relative hover-underline d-flex align-items-center gap-2"
+            href="/"
+          >
+            <i class="bi bi-house"></i><span class="d-inline">Home</span>
+          </a>
+          <a
+            class="nav-link text-dark fw-bold position-relative hover-underline d-flex align-items-center gap-2"
+            href="{% url 'blog' %}"
+          >
+            <i class="bi bi-pencil-square"></i><span class="d-inline">Blog</span>
+          </a>
+          <a
+            class="nav-link text-dark fw-bold position-relative hover-underline d-flex align-items-center gap-2"
+            href="{% url 'about' %}"
+          >
+            <i class="bi bi-info-circle"></i><span class="d-inline">About</span>
+          </a>
+          <a
+            class="nav-link text-dark fw-bold position-relative hover-underline d-flex align-items-center gap-2"
+            href="{% url 'contact' %}"
+          >
+            <i class="bi bi-envelope"></i><span class="d-inline">Contact</span>
+          </a>
+        </div>
+
+        <!-- Profile Section (Desktop) -->
+        <div class="ms-lg-auto mt-3 mt-lg-0 d-none d-lg-block">
+          {% if user.is_authenticated %}
+          <div class="dropdown">
+            <div
+              class="d-flex align-items-center gap-3"
+              data-bs-toggle="dropdown"
+            >
+            <span class="d-none d-lg-inline">Welcome! {{ user.username }}</span>
+              <img
+                src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default-avatar.png' %}{% endif %}"
+                class="profile-picture rounded-circle shadow-sm"
+                alt="Profile"
+                style="width: 42px; height: 42px; object-fit: cover"
+              />
+             
+            </div>
+            <!-- Google-style Desktop Dropdown on click profile pic-->
+            <div class="dropdown-menu border-0 shadow-lg p-0 overflow-hidden" style="position: absolute; top: 100%; margin-top:0.5rem; right:0; margin-right:5rem; width: 320px; z-index: 1050;">
+              <div class="google-profile-header p-4 text-center bg-white">
+                <img
+                  src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default-avatar.png' %}{% endif %}"
+                  class="google-profile-picture rounded-circle mb-2"
+                  alt="Profile"
+                  style="width: 60px; height: 60px; object-fit: cover;"
+                />
+                <h6 class="mb-2 fw-bold">Hi, {{ user.username }}!</h6>
+                <a href="{% url 'profile' %}" class="btn btn-outline-primary rounded-pill btn-sm fw-medium w-100">
+                  Manage your account
+                </a>
+              </div>
+            
+              <!-- Sign Out Button -->
+              <div class="p-3 bg-light border-top">
+                <form method="post" action="{% url 'logout' %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger w-100 rounded-pill d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-box-arrow-right"></i> Sign out
+                  </button>
+                </form>
+              </div>
+            </div>
+            
+          </div>
+          {% else %}
+          <div class="d-flex align-items-center gap-2">
+            <a
+              class="btn btn-soft-primary px-3 px-lg-4 rounded-pill d-flex align-items-center gap-2 hover-scale"
+              href="{% url 'register' %}"
+            >
+              <i class="bi bi-person-plus"></i><span class="d-none d-sm-inline">Register</span>
+            </a>
+            <a
+              class="btn btn-primary text-white px-3 px-lg-4 rounded-pill d-flex align-items-center gap-2 hover-scale"
+              href="{% url 'login' %}"
+            >
+              <i class="bi bi-box-arrow-in-right"></i><span class="d-none d-sm-inline">Login</span>
+            </a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+/>
+
+<style>
+  /* Original Styles (Unchanged) */
+  .gradient-text {
+    background: linear-gradient(45deg, #2563eb, #7c3aed);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent !important;
+  }
+
+  .profile-picture {
+    transition: all 0.3s ease;
+    border: 2px solid #e2e8f0;
+    cursor: pointer;
+  }
+
+  .profile-picture:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .dropdown-menu {
+    border-radius: 12px;
+    padding: 0.5rem;
+    border: 1px solid #e2e8f0 !important;
+    min-width: 200px;
+  }
+
+  .dropdown-item {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
+    font-weight: 500;
+  }
+
+  .dropdown-item:hover {
+    background: #f8fafc;
+    transform: translateX(5px);
+  }
+
+  .dropdown-item:active {
+    background: #f1f5f9;
+  }
+
+  /* Button Styles */
+  .btn-soft-primary {
+    background-color: rgba(37, 99, 235, 0.1) !important;
+    color: #2563eb !important;
+    border: 1px solid rgba(37, 99, 235, 0.2) !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .btn-soft-primary:hover {
+    background-color: rgba(37, 99, 235, 0.15) !important;
+    color: #1d4ed8 !important;
+    border-color: rgba(37, 99, 235, 0.3) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+  }
+
+  .btn-primary {
+    background-color: #2563eb !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .btn-primary:hover {
+    background-color: #1d4ed8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+  }
+
+  /* Hover underline animation */
+  .hover-underline::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #2563eb;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+  }
+
+  .hover-underline:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+
+  /* Scale effect */
+  .hover-scale {
+    transition: transform 0.3s ease;
+  }
+
+  .hover-scale:hover {
+    transform: scale(1.02) translateY(-1px);
+  }
+
+  /* Mobile-specific styles (Updated to look like Google) */
+  @media (max-width: 991.98px) {
+    /* Hide default navbar elements on mobile */
+    .navbar > .container > .navbar-brand:not(.mx-auto),
+    .navbar > .container > .navbar-toggler:not(.d-lg-none) {
+      display: none;
+    }
+    
+    /* Google-style mobile layout */
+    .mobile-auth-section {
+      display: flex;
+      align-items: center;
+    }
+    
+    /* Google-style Sign In button */
+    .mobile-sign-in {
+      background: linear-gradient(135deg, #2563eb, #7c3aed) !important;
+      font-weight: 500;
+      border-radius: 20px !important;
+      padding: 0.3rem 0.8rem !important;
+      font-size: 0.9rem !important;
+      line-height: 1.6 !important;
+    }
+    
+    /* Special styling for mobile menu when opened */
+    .navbar-nav {
+      gap: 1rem;
+      padding: 1rem 0;
+      margin-top: 1rem;
+    }
+    
+    .nav-link {
+      padding: 0.5rem 1rem;
+      width: 100%;
+      justify-content: flex-start;
+    }
+
+    .nav-link:hover {
+      color: #2563eb !important;
+    }
+    
+    .navbar-nav > .d-flex {
+      justify-content: flex-start !important;
+      align-items: flex-start !important;
+      width: 100%;
+    }
+    
+    /* Hamburger styling */
+    .hamburger-button {
+      padding: 0.25rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+    }
+
+    .hamburger-button:hover {
+      transform: scale(1.05);
+      transition: transform 0.2s ease;
+    }
+  
+    .hamburger-button:hover .line {
+      background-color: #2563eb;
+    }
+
+    .hamburger-lines {
+      width: 20px;
+      height: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hamburger-lines .line {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background: #5f6368;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    .navbar-toggler[aria-expanded="true"] .line1 {
+      transform: translateY(6px) rotate(45deg);
+    }
+
+    .navbar-toggler[aria-expanded="true"] .line2 {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    .navbar-toggler[aria-expanded="true"] .line3 {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+    
+    /* Google-style mobile dropdown */
+    .mobile-google-dropdown {
+      width: 100vw;
+      max-width: 360px;
+      padding: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      border: none !important;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important;
+    }
+    
+    .google-profile-header {
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #e1e3e6;
+    }
+    
+    .google-profile-picture {
+      width: 72px;
+      height: 72px;
+      object-fit: cover;
+      border: 2px solid white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    
+    .account-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+    
+    .google-dropdown-section {
+      background-color: white;
+    }
+    
+    .section-header {
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    
+    .google-dropdown-item {
+      text-decoration: none;
+      color: #202124;
+      transition: background-color 0.2s;
+    }
+    
+    .google-dropdown-item:hover {
+      background-color: #f1f3f4;
+      transform: none;
+    }
+    
+    .google-icon-wrapper {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #f1f3f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .google-icon-wrapper i {
+      font-size: 1.1rem;
+      color: #5f6368;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .ms-lg-auto .d-flex {
+      flex-direction: column;
+      width: 100%;
+      gap: 0.75rem !important;
+    }
+    
+    .ms-lg-auto .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>

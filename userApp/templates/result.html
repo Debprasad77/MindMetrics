@@ -1,0 +1,1341 @@
+{% include 'navbar.html' %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mental Health Results - Insight Scholar</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+      :root {
+        --primary: #4361ee;
+        --primary-light: #a5b4fc;
+        --primary-dark: #3a56d4;
+        --secondary: #7c3aed;
+        --secondary-light: #c4b5fd;
+        --accent: #ff6b6b;
+        --accent-light: #fecaca;
+        --success: #14b8a6;
+        --success-light: #99f6e4;
+        --success-dark: #119c8d;
+        --warning: #f59e0b;
+        --warning-light: #fde68a;
+        --warning-dark: #db8e09;
+        --danger: #e11d48;
+        --danger-light: #fda4af;
+        --danger-dark: #c91a3e;
+        --light: #f8fafc;
+        --dark: #1e293b;
+        --gray: #94a3b8;
+        --gray-light: #e2e8f0;
+        --gray-dark: #64748b;
+
+        /* Insight section colors */
+        --stress-bg: rgba(225, 29, 72, 0.08);
+        --stress-border: #e11d48;
+        --stress-text: #e11d48;
+        --depression-bg: rgba(245, 158, 11, 0.08);
+        --depression-border: #f59e0b;
+        --depression-text: #f59e0b;
+        --anxiety-bg: rgba(20, 184, 166, 0.08);
+        --anxiety-border: #14b8a6;
+        --anxiety-text: #14b8a6;
+      }
+
+      body {
+        padding-top: 80px;
+        background: linear-gradient(15deg, #f8fafc 0%, #ffffff 100%);
+        font-family: "Poppins", sans-serif;
+        color: var(--dark);
+      }
+
+      .progress-container {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        color: white;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .progress-container::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1) 0%,
+          rgba(255, 255, 255, 0) 70%
+        );
+        transform: rotate(30deg);
+      }
+
+      .metric-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        border-left: 4px solid var(--primary);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .metric-card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.2) 0%,
+          rgba(255, 255, 255, 0) 100%
+        );
+        z-index: 1;
+      }
+
+      .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+
+      .metric-icon {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        opacity: 0.8;
+      }
+
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .chart-card {
+        grid-column: span 6;
+        background: white;
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+      }
+
+      .chart-card.small {
+        grid-column: span 4;
+      }
+
+      .chart-card.full-width {
+        grid-column: span 12;
+      }
+
+      .chart-container {
+        flex: 1;
+        position: relative;
+        min-height: 300px;
+      }
+
+      .chart-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 1rem;
+        padding-left: 0.5rem;
+        border-left: 3px solid var(--primary);
+        display: flex;
+        align-items: center;
+      }
+
+      .chart-title i {
+        margin-right: 0.5rem;
+        color: var(--primary);
+      }
+
+      .insights-section {
+        grid-column: span 12;
+        background: white;
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      }
+
+      .insights-tabs {
+        display: flex;
+        border-bottom: 1px solid var(--gray-light);
+        margin-bottom: 1.5rem;
+      }
+
+      .insights-tab {
+        padding: 0.75rem 1.5rem;
+        cursor: pointer;
+        font-weight: 500;
+        color: var(--gray-dark);
+        border-bottom: 3px solid transparent;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+      }
+
+      .insights-tab i {
+        margin-right: 0.5rem;
+      }
+
+      .insights-tab.active {
+        color: var(--primary);
+        border-bottom-color: var(--primary);
+      }
+
+      .insights-tab:hover:not(.active) {
+        color: var(--dark);
+      }
+
+      .insight-content {
+        display: none;
+      }
+
+      .insight-content.active {
+        display: block;
+      }
+
+      .recommendation-item {
+        display: flex;
+        align-items: flex-start;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--gray-light);
+      }
+
+      .recommendation-icon {
+        margin-right: 1rem;
+        font-size: 1.25rem;
+        color: var(--primary);
+        flex-shrink: 0;
+      }
+
+      .resource-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        border-top: 4px solid var(--primary);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .resource-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+
+      .resource-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .resource-title i {
+        margin-right: 0.5rem;
+        color: var(--primary);
+      }
+
+      .resource-description {
+        color: var(--gray-dark);
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+      }
+
+      .action-buttons {
+        display: flex;
+        justify-content: center;
+        margin: 2rem 0;
+        gap: 1rem;
+      }
+
+      .trend-indicator {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.5rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        margin-left: 0.5rem;
+      }
+
+      .trend-up {
+        background-color: var(--danger-light);
+        color: var(--danger);
+      }
+
+      .trend-down {
+        background-color: var(--success-light);
+        color: var(--success);
+      }
+
+      .trend-neutral {
+        background-color: var(--gray-light);
+        color: var(--gray);
+      }
+
+      .symptom-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid var(--primary-light);
+      }
+
+      .symptom-title {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .symptom-title i {
+        margin-right: 0.5rem;
+        color: var(--primary);
+      }
+
+      .symptom-severity {
+        height: 8px;
+        background: var(--gray-light);
+        border-radius: 4px;
+        overflow: hidden;
+        margin-top: 0.5rem;
+      }
+
+      .symptom-progress {
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+      }
+
+      .wellness-tip {
+        background: rgba(67, 97, 238, 0.05);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid var(--success);
+      }
+
+      .wellness-tip i {
+        color: var(--success);
+        margin-right: 0.5rem;
+      }
+
+      .factor-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .factor-title {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .factor-title i {
+        margin-right: 0.5rem;
+        color: var(--primary);
+      }
+
+      .factor-value {
+        font-weight: 600;
+        color: var(--dark);
+      }
+
+      .factor-positive {
+        color: var(--success);
+      }
+
+      .factor-negative {
+        color: var(--danger);
+      }
+
+      .factor-neutral {
+        color: var(--warning);
+      }
+
+      /* Insight columns styling */
+      .insight-column {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        height: 100%;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      }
+
+      .stress-column {
+        border-top: 4px solid var(--stress-border);
+        background-color: var(--stress-bg);
+      }
+
+      .stress-column h5 {
+        color: var(--stress-text);
+      }
+
+      .stress-column .recommendation-item i {
+        color: var(--stress-text);
+      }
+
+      .depression-column {
+        border-top: 4px solid var(--depression-border);
+        background-color: var(--depression-bg);
+      }
+
+      .depression-column h5 {
+        color: var(--depression-text);
+      }
+
+      .depression-column .recommendation-item i {
+        color: var(--depression-text);
+      }
+
+      .anxiety-column {
+        border-top: 4px solid var(--anxiety-border);
+        background-color: var(--anxiety-bg);
+      }
+
+      .anxiety-column h5 {
+        color: var(--anxiety-text);
+      }
+
+      .anxiety-column .recommendation-item i {
+        color: var(--anxiety-text);
+      }
+
+      /* Badge styling */
+      .badge {
+        font-weight: 500;
+        padding: 0.35em 0.65em;
+        font-size: 0.75em;
+      }
+
+      /* Progress bar styling */
+      .progress {
+        overflow: visible;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .progress-bar {
+        position: relative;
+        font-weight: 500;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+      }
+
+      .progress-bar::after {
+        content: "";
+        position: absolute;
+        right: -1px;
+        top: -3px;
+        height: calc(100% + 6px);
+        width: 2px;
+        background: rgba(255, 255, 255, 0.4);
+      }
+
+      /* Button styling */
+      .btn {
+        font-weight: 500;
+        padding: 0.5rem 1.5rem;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+      }
+
+      .btn-primary {
+        background-color: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--primary-dark);
+        border-color: var(--primary-dark);
+      }
+
+      .btn-success {
+        background-color: var(--success);
+        border-color: var(--success);
+      }
+
+      .btn-success:hover {
+        background-color: var(--success-dark);
+        border-color: var(--success-dark);
+      }
+
+      .btn-outline-primary {
+        color: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .btn-outline-primary:hover {
+        background-color: var(--primary);
+        color: white;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 992px) {
+        .dashboard-grid {
+          grid-template-columns: 1fr;
+        }
+        .chart-card,
+        .chart-card.small {
+          grid-column: span 1;
+        }
+
+        .action-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .btn {
+          width: 100%;
+          max-width: 300px;
+          margin-bottom: 0.5rem;
+        }
+        
+        .progress-container h2 {
+          font-size: 1.5rem;
+        }
+        
+        .metric-card h1 {
+          font-size: 2rem;
+        }
+        
+        .insights-tabs {
+          overflow-x: auto;
+          white-space: nowrap;
+          padding-bottom: 0.5rem;
+        }
+        
+        .insights-tab {
+          padding: 0.5rem 1rem;
+          font-size: 0.9rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        body {
+          padding-top: 70px;
+        }
+        
+        .progress-container {
+          padding: 1.5rem;
+        }
+        
+        .metric-card {
+          padding: 1rem;
+        }
+        
+        .chart-title {
+          font-size: 1rem;
+        }
+        
+        .chart-container {
+          min-height: 250px;
+        }
+        
+        .recommendation-item {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        
+        .recommendation-icon {
+          margin-bottom: 0.5rem;
+        }
+        
+        .factor-card {
+          padding: 0.75rem;
+        }
+        
+        .factor-title {
+          font-size: 0.9rem;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .progress-container h2 {
+          font-size: 1.3rem;
+        }
+        
+        .metric-card h3 {
+          font-size: 1.1rem;
+        }
+        
+        .metric-card h1 {
+          font-size: 1.8rem;
+        }
+        
+        .chart-card {
+          padding: 1rem;
+        }
+        
+        .insight-column {
+          padding: 1rem;
+        }
+        
+        .action-buttons .btn {
+          padding: 0.5rem 1rem;
+          font-size: 0.9rem;
+        }
+        
+        /* Adjust chart sizes for very small screens */
+        .chart-container {
+          min-height: 200px;
+        }
+        
+        /* Make sure radar chart stays visible */
+        #radarChart {
+          max-height: 250px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header Section Banner-->
+      <div class="progress-container">
+        <h2 class="text-center mb-4">
+          <i class="fas fa-brain"></i> Your Mental Health Overview 🧠
+        </h2>
+        <div
+          class="progress"
+          style="height: 40px; background: rgba(255, 255, 255, 0.2)"
+        ></div>
+      </div>
+
+      <!-- Analysis Cards -->
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="metric-card" style="border-left-color: var(--stress-border);">
+            <div class="metric-icon text-danger">
+              <i class="fas fa-fire"></i>
+            </div>
+            <h3>Stress Level <span class="badge bg-danger">(out of 5)</span></h3>
+            <h1 class="display-4">{{ insights.stress.score|floatformat:1 }}</h1>
+            <span class="badge bg-danger">{{ insights.stress.level }}</span>
+            <div class="mt-2">
+              <small class="text-muted"
+                >Thresholds: Low ≤ 2, Moderate < 3.5, High ≥ 3.5</small
+              >
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="metric-card" style="border-left-color: var(--depression-border);">
+            <div class="metric-icon text-warning">
+              <i class="fas fa-cloud"></i>
+            </div>
+            <h3>Depression Level</span></h3>
+            <h1 class="display-4">
+              {{ insights.depression.score|floatformat:1 }}
+            </h1>
+            <span class="badge bg-warning"
+              >{{ insights.depression.level }}</span
+            >
+            <div class="mt-2">
+              <small class="text-muted"
+                >Thresholds: Low ≤ 2, Moderate < 3.5, High ≥ 3.5</small
+              >
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="metric-card" style="border-left-color: var(--anxiety-border);">
+            <div class="metric-icon text-success">
+              <i class="fas fa-wind"></i>
+            </div>
+            <h3>Anxiety Score</span></h3>
+            <h1 class="display-4">
+              {{ insights.anxiety.score|floatformat:1 }}
+            </h1>
+            <span class="badge bg-success">{{ insights.anxiety.level }}</span>
+            <div class="mt-2">
+              <small class="text-muted"
+                >Thresholds: Low ≤ 2, Moderate < 3.5, High ≥ 3.5</small
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart Boards Grid -->
+      <div class="dashboard-grid">
+        <!-- Radar Chart -->
+        <div class="chart-card">
+          <h5 class="chart-title">
+            <i class="fas fa-balance-scale-left"></i> Your Mental Health Profile
+          </h5>
+          <div class="chart-container">
+            <canvas id="radarChart" height="350"></canvas>
+          </div>
+        </div>
+
+        <!-- Comparison With Peers -->
+        <div class="chart-card">
+          <h5 class="chart-title">
+            <i class="fas fa-chart-bar"></i> Comparison With Peers
+          </h5>
+          <div class="chart-container">
+            <canvas id="comparisonChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Symptom Distribution Pie Chart -->
+        <div class="chart-card">
+          <h5 class="chart-title">
+            <i class="fas fa-chart-pie"></i> Symptom Distribution
+          </h5>
+          <div class="chart-container">
+            <canvas id="symptomChart"></canvas>
+          </div>
+        </div>
+
+       <!-- Symptom Frequency Chart -->
+        <div class="chart-card">
+          <h5 class="chart-title">
+            <i class="fas fa-chart-bar"></i> Symptom Frequency
+          </h5>
+          <div class="chart-container">
+            <canvas id="symptomFrequencyChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Different Factor Analysis Banner -->
+      <div style="
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        padding: 1rem 2rem; 
+        border-radius: 12px; 
+        margin-bottom: 1.5rem; 
+        text-align: center;
+        color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        ">
+        <h2 style="margin: 0; font-size: 1.75rem;">📊 Different Factor Analysis 📊</h2>
+      </div>
+      
+      <!-- Different Factor Analysis -->
+      <div class="dashboard-grid">
+        <div class="chart-card">
+          <h5 class="chart-title">
+            <i class="fas fa-clipboard-check"></i> Lifestyle Factors Analysis
+          </h5>
+
+          <!-- Sleep Quality -->
+          <div class="factor-card">
+            <div class="factor-title">
+              <i class="fas fa-bed"></i> Sleep Quality:&nbsp;
+              <span class="factor-value {% if user_data.sleep_quality == 'Good' %}factor-positive{% elif user_data.sleep_quality == 'Poor' %}factor-negative{% else %}factor-neutral{% endif %}">
+                {{ user_data.sleep_quality }}
+              </span>
+            </div>
+            <small class="text-muted">
+              <strong style="color: #000;">Impact:</strong>{% if user_data.sleep_quality == 'Good' %} 🌟 Positive (7-9 hours recommended) 
+              {% elif user_data.sleep_quality == 'Poor' %}⚠️ Negative (&lt;6 hours increases risk) 
+              {% else %} 🤔 Neutral (Aim for more consistent sleep) 
+              {% endif %}
+            </small>
+          </div>
+
+          <!-- Physical Activity -->
+          <div class="factor-card">
+            <div class="factor-title">
+              <i class="fas fa-running"></i> Physical Activity:&nbsp;
+              <div class="factor-value {% if user_data.physical_activity == 'High' %}factor-positive {% elif user_data.physical_activity == 'Low' %}factor-negative {% else %}factor-neutral{% endif %}">
+                {{ user_data.physical_activity }}
+              </div>
+            </div>
+            <small class="text-muted">
+              <strong style="color: #000;">Impact:</strong>{% if user_data.physical_activity == 'High' %} 🌟 Positive (150+ mins/week ideal) 
+              {% elif user_data.physical_activity == 'Low' %} ⚠️ Negative (&lt;30 mins/week risky) 
+              {% else %} 🤔 Neutral (Aim for 75-150 mins/week) 
+              {% endif %}
+            </small>
+          </div>
+
+          <!-- Diet Quality -->
+          <div class="factor-card">
+            <div class="factor-title">
+              <i class="fas fa-utensils"></i> Diet Quality:&nbsp;
+              <div class="factor-value {% if user_data.diet_quality == 'Good' %}factor-positive {% elif user_data.diet_quality == 'Poor' %}factor-negative {% else %}factor-neutral{% endif %}">
+                {{ user_data.diet_quality }}
+              </div>
+            </div>
+            <small class="text-muted">
+              <strong style="color: #000;">Impact:</strong>{% if user_data.diet_quality == 'Good' %} 🌟 Positive (Balanced nutrition) 
+              {% elif user_data.diet_quality == 'Poor' %} ⚠️ Negative (Processed foods risk) 
+              {% else %} 🤔 Neutral (Room for improvement) 
+              {% endif %}
+            </small>
+          </div>
+
+          <!-- Social Support -->
+          <div class="factor-card">
+            <div class="factor-title">
+              <i class="fas fa-users"></i> Social Support:&nbsp;
+              <div class="factor-value {% if user_data.social_support == 'High' %}factor-positive {% elif user_data.social_support == 'Low' %}factor-negative {% else %}factor-neutral{% endif %}">
+                {{ user_data.social_support }}
+              </div>
+            </div>
+            <small class="text-muted">
+              <strong style="color: #000;">Impact:</strong>{% if user_data.social_support == 'High' %} 🌟 Positive (3+ close connections) 
+              {% elif user_data.social_support == 'Low' %} ⚠️ Negative (Isolation risk factor) 
+              {% else %} 🤔 Neutral (Could strengthen networks) 
+              {% endif %}
+            </small>
+          </div>
+
+          <!-- Extracurricular Involvement -->
+          <div class="factor-card">
+            <div class="factor-title">
+              <i class="fas fa-icons"></i> Extracurriculars:&nbsp;
+              <div class="factor-value {% if user_data.extracurricular_involvement == 'High' %}factor-positive {% elif user_data.extracurricular_involvement == 'Low' %}factor-negative {% else %}factor-neutral{% endif %}">
+                {{ user_data.extracurricular_involvement|default:"Moderate" }}
+              </div>
+            </div>
+            <small class="text-muted">
+              <strong style="color: #000;">Impact:</strong>{% if user_data.extracurricular_involvement == 'High' %} 🌟 Positive (Good work-life balance) 
+              {% elif user_data.extracurricular_involvement == 'Low' %} ⚠️ Negative (All work no play) 
+              {% else %} 🤔 Neutral (Could engage more) 
+              {% endif %}
+            </small>
+          </div>
+        </div>
+
+        <!-- Risk Factors -->
+        <div class="chart-card">
+          <h5 class="chart-title">
+            <i class="fas fa-exclamation-triangle"></i> Risk Factors Analysis
+          </h5>
+
+          <!-- Financial Stress -->
+          <div class="factor-card">
+            <div class="factor-title" style="font-weight: 600;">
+              <i class="fas fa-money-bill-wave"></i> Financial Stress
+            </div>
+            <div class="factor-value {% if user_data.financial_stress >= 4 %}factor-negative{% elif user_data.financial_stress >= 2 %}factor-neutral{% else %}factor-positive{% endif %}" style="font-weight: bold;">
+              {{ user_data.financial_stress }} <span style="font-weight: bold;">out of 5 -</span>
+              <small class="text-muted">
+                {% if user_data.financial_stress >= 4 %} (High financial burden ❌)  
+                {% elif user_data.financial_stress >= 2 %} (Moderate stress ⚠️)
+                {% else %}(Manageable ✅){% endif %}
+              </small>
+            </div>
+          </div>
+
+          <!-- Substance Use -->
+          <div class="factor-card">
+            <div class="factor-title" style="font-weight: 600;">
+              <i class="fas fa-wine-bottle"></i> Substance Use
+            </div>
+            <div class="factor-value {% if user_data.substance_use == 'Frequently' %}factor-negative{% elif user_data.substance_use == 'Never' %}factor-positive{% else %}factor-neutral{% endif %}" style="font-weight: bold;">
+              {{ user_data.substance_use }}
+              {% if user_data.substance_use == 'Frequently' %} ❗
+              {% elif user_data.substance_use == 'Never' %} ✅
+              {% else %} ⚠️{% endif %}
+            </div>
+          </div>
+
+          <!-- Family History -->
+          <div class="factor-card">
+            <div class="factor-title" style="font-weight: 600;">
+              <i class="fas fa-dna"></i> Family History
+            </div>
+            <div class="factor-value {% if user_data.family_history == 'Yes' %}factor-negative{% else %}factor-positive{% endif %}" style="font-weight: bold;">
+              {{ user_data.family_history }}
+              {% if user_data.family_history == 'Yes' %} ❗{% else %} ✅{% endif %}
+            </div>
+          </div>
+
+          <!-- Chronic Illness -->
+          <div class="factor-card">
+            <div class="factor-title" style="font-weight: 600;">
+              <i class="fas fa-procedures"></i> Chronic Illness
+            </div>
+            <div class="factor-value {% if user_data.chronic_illness == 'Yes' %}factor-negative{% else %}factor-positive{% endif %}" style="font-weight: bold;">
+              {{ user_data.chronic_illness }}
+              {% if user_data.chronic_illness == 'Yes' %} ❗{% else %} ✅{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Recommendation Sections -->
+      <div class="dashboard-grid">
+        <div class="chart-card full-width" style="margin-bottom: 2rem;">
+          <div class="row g-4">
+            <div class="col-lg-4">
+              <div class="insight-column stress-column">
+                <h5 class="mb-3">
+                  <i class="fas fa-fire"></i> Stress Management
+                </h5>
+                {% for recommendation in insights.stress.recommendations %}
+                <div class="recommendation-item" style="display: flex; align-items: flex-start;">
+                  <i class="fas fa-circle small" style="margin-right: 0.5rem; margin-top: 0.25rem;"></i>
+                  <div>{{ recommendation }}</div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="insight-column depression-column">
+                <h5 class="mb-3">
+                  <i class="fas fa-cloud"></i> Depression Support
+                </h5>
+                {% for recommendation in insights.depression.recommendations %}
+                <div class="recommendation-item" style="display: flex; align-items: flex-start;">
+                  <i class="fas fa-circle small" style="margin-right: 0.5rem; margin-top: 0.25rem;"></i>
+                  <div>{{ recommendation }}</div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="insight-column anxiety-column">
+                <h5 class="mb-3">
+                  <i class="fas fa-wind"></i> Anxiety Reduction
+                </h5>
+                {% for recommendation in insights.anxiety.recommendations %}
+                <div class="recommendation-item" style="display: flex; align-items: flex-start;">
+                  <i class="fas fa-circle small" style="margin-right: 0.5rem; margin-top: 0.25rem;"></i>
+                  <div>{{ recommendation }}</div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Analysis Banner -->
+      <div style="
+        background: transparent;
+        padding: 1rem 2rem; 
+        border-radius: 12px; 
+        margin-bottom: 1.5rem; 
+        text-align: center;
+        color: black;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        ">
+        <h2 style="margin: 0; font-size: 1.75rem;"><i class="fas fa-microscope"></i> Detailed Analysis </h2>
+      </div>
+
+      <!-- Detailed Analysis -->
+      <div class="chart-card full-width">
+        <div class="chart-container">
+          {% for explanation in explanation.explanations %}
+          <div class="recommendation-item">
+            <div class="recommendation-icon">
+              <i class="fas fa-arrow-right text-primary"></i>
+            </div>
+            <div>{{ explanation }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div> 
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <a href="{% url 'home' %}" class="btn btn-primary px-5 py-3">
+          <i class="fas fa-redo me-2"></i>Retake Assessment
+        </a>
+        <a href="#" class="btn btn-outline-primary px-5 py-3">
+          <i class="fas fa-share me-2"></i>Share Results
+        </a>
+      </div>
+    </div>
+
+    <script>
+      // Radar Chart
+      new Chart(document.getElementById('radarChart'), {
+        type: 'radar',
+        data: {
+          labels: ['Stress', 'Depression', 'Anxiety'],
+          datasets: [
+            {
+              label: 'Your Scores',
+              data: [
+                {{ insights.stress.score|floatformat:1 }},
+                {{ insights.depression.score|floatformat:1 }},
+                {{ insights.anxiety.score|floatformat:1 }},
+              ],
+              backgroundColor: 'rgba(67, 97, 238, 0.1)',
+              borderColor: '#4361ee',
+              pointBackgroundColor: [
+                '#e11d48', // Stress color (red)
+                '#f59e0b', // Depression color (yellow/orange)
+                '#14b8a6'  // Anxiety color (teal)
+              ],
+              pointHoverRadius: 6,
+              pointRadius: 4,
+              borderWidth: 2
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            r: {
+              beginAtZero: true,
+              max: 5,
+              ticks: {
+                stepSize: 1,
+                backdropColor: 'transparent',
+                color: '#94a3b8'
+              },
+              angleLines: {
+                color: '#e2e8f0'
+              },
+              grid: {
+                color: '#e2e8f0'
+              },
+              pointLabels: {
+                font: {
+                  size: 15,
+                  family: 'Poppins'
+                },
+                color: '#1e293b'
+              },
+            },
+          },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                font: {
+                  family: 'Poppins'
+                },
+                boxWidth: 12,
+                padding: 20
+              }
+            }
+          }
+        },
+      });
+
+      // Comparison Chart
+      new Chart(document.getElementById('comparisonChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Stress', 'Depression', 'Anxiety'],
+          datasets: [
+            {
+              label: 'Your Score',
+              data: [
+                {{ insights.stress.score|floatformat:1 }},
+                {{ insights.depression.score|floatformat:1 }},
+                {{ insights.anxiety.score|floatformat:1 }},
+              ],
+              backgroundColor: [
+                'rgba(225, 29, 72, 0.8)',  // Stress (red)
+                'rgba(245, 158, 11, 0.8)', // Depression (yellow/orange)
+                'rgba(20, 184, 166, 0.8)'  // Anxiety (teal)
+              ],
+              borderColor: [
+                '#e11d48',
+                '#f59e0b',
+                '#14b8a6'
+              ],
+              borderWidth: 1,
+              borderRadius: 8,
+              barThickness: 45,
+            },
+            {
+              label: 'Average',
+              data: [2.2, 1.8, 2.0],
+              backgroundColor: 'rgba(124, 58, 237, 0.2)',
+              borderColor: '#7c3aed',
+              borderWidth: 1,
+              borderRadius: 8,
+              barThickness: 45,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 5,
+              grid: {
+                color: '#e2e8f0'
+              },
+              ticks: {
+                font: {
+                  size: 15,
+                  family: 'Poppins'
+                },
+                color: '#64748b',
+                stepSize: 1,
+              },
+            },
+            x: {
+              grid: {
+                display: false
+              },
+              ticks: {
+                font: {
+                  size: 15,
+                  family: 'Poppins'
+                },
+                color: '#64748b'
+              },
+            },
+          },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                font: {
+                  family: 'Poppins'
+                },
+                boxWidth: 12,
+                padding: 20
+              }
+            }
+          }
+        },
+      });
+
+      // Pie Chart matching analysis cards
+      new Chart(document.getElementById('symptomChart'), {
+        type: 'pie',
+        data: {
+          labels: ['Stress', 'Depression', 'Anxiety'],
+          datasets: [{
+            data: [
+              {{ insights.stress.score|floatformat:1 }},
+              {{ insights.depression.score|floatformat:1 }},
+              {{ insights.anxiety.score|floatformat:1 }}
+            ],
+            backgroundColor: [
+              'rgba(225, 29, 72, 0.8)',  // Stress (matches card border)
+              'rgba(245, 158, 11, 0.8)', // Depression (matches card border)
+              'rgba(20, 184, 166, 0.8)'  // Anxiety (matches card border)
+            ],
+            borderColor: '#fff',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: {
+                font: {
+                  family: 'Poppins',
+                  size: 12
+                },
+                padding: 20,
+                usePointStyle: true,
+                pointStyle: 'circle'
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return `${context.label}: ${context.raw} (${context.parsed}%)`;
+                }
+              }
+            }
+          }
+        },
+        plugins: [{
+          id: 'percentageLabels',
+          afterDraw(chart) {
+            const ctx = chart.ctx;
+            ctx.font = 'bold 14px Poppins';
+            ctx.textAlign = 'center';
+            
+            chart.data.datasets.forEach((dataset, i) => {
+              const meta = chart.getDatasetMeta(i);
+              const total = dataset.data.reduce((a, b) => a + b, 0);
+              
+              meta.data.forEach((segment, index) => {
+                const model = segment;
+                const midAngle = model.startAngle + (model.endAngle - model.startAngle)/2;
+                const x = model.x + Math.cos(midAngle) * (model.outerRadius * 0.6);
+                const y = model.y + Math.sin(midAngle) * (model.outerRadius * 0.6);
+                
+                const percent = Math.round((dataset.data[index]/total)*100);
+                ctx.fillStyle = '#fff';
+                ctx.fillText(percent + '%', x, y);
+              });
+            });
+          }
+        }]
+      });
+
+      // Symptom Frequency Chart
+      document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('symptomFrequencyChart');
+        
+        // Calculate symptom frequencies based on user's scores
+        const stressScore = {{ insights.stress.score|default:0 }};
+        const depressionScore = {{ insights.depression.score|default:0 }};
+        const anxietyScore = {{ insights.anxiety.score|default:0 }};
+        
+        // Normalize scores to 1-5 scale for display
+        const fatigue = (stressScore * 1.2).toFixed(1);
+        const sleepIssues = (depressionScore * 0.9).toFixed(1);
+        const appetite = (depressionScore * 0.7).toFixed(1);
+        const concentration = (anxietyScore * 0.8).toFixed(1);
+        const moodSwings = ((stressScore + depressionScore) / 2).toFixed(1);
+        
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['Fatigue', 'Sleep Issues', 'Appetite', 'Concentration', 'Mood Swings'],
+            datasets: [{
+              label: 'Symptom Severity (1-5 scale)',
+              data: [fatigue, sleepIssues, appetite, concentration, moodSwings],
+              backgroundColor: [
+                'rgba(225, 29, 72, 0.7)',    // Stress color
+                'rgba(245, 158, 11, 0.7)',   // Depression color
+                'rgba(245, 158, 11, 0.7)',   // Depression color
+                'rgba(20, 184, 166, 0.7)',    // Anxiety color
+                'rgba(124, 58, 237, 0.7)'     // Combined color
+              ],
+              borderColor: [
+                'rgba(225, 29, 72, 1)',
+                'rgba(245, 158, 11, 1)',
+                'rgba(245, 158, 11, 1)',
+                'rgba(20, 184, 166, 1)',
+                'rgba(124, 58, 237, 1)'
+              ],
+              borderWidth: 1,
+              borderRadius: 8
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 5,
+                grid: {
+                  color: '#e2e8f0'
+                },
+                ticks: {
+                  font: {
+                    family: 'Poppins'
+                  },
+                  color: '#64748b',
+                  stepSize: 1,
+                  callback: function(value) {
+                    if (value === 0) return 'None';
+                    if (value === 1) return 'Mild';
+                    if (value === 2) return 'Moderate';
+                    if (value === 3) return 'Significant';
+                    if (value === 4) return 'Severe';
+                    if (value === 5) return 'Extreme';
+                  }
+                }
+              },
+              x: {
+                grid: {
+                  display: false
+                },
+                ticks: {
+                  font: {
+                    size: 12,
+                    family: 'Poppins'
+                  },
+                  color: '#64748b'
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                position: 'top',
+                labels: {
+                  font: {
+                    family: 'Poppins'
+                  },
+                  boxWidth: 12,
+                  padding: 20
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    let label = context.dataset.label || '';
+                    if (label) {
+                      label += ': ';
+                    }
+                    if (context.parsed.y !== null) {
+                      label += context.parsed.y + '/5 severity';
+                    }
+                    return label;
+                  }
+                }
+              }
+            }
+          }
+        });
+      });
+
+      // Handle chart resizing on mobile
+      function handleResize() {
+        const charts = [
+          document.getElementById('radarChart'),
+          document.getElementById('comparisonChart'),
+          document.getElementById('symptomChart'),
+          document.getElementById('symptomFrequencyChart')
+        ];
+        
+        charts.forEach(chart => {
+          if (chart && chart.chart) {
+            chart.chart.resize();
+          }
+        });
+      }
+      
+      // Initial resize
+      handleResize();
+      
+      // Add resize event listener
+      window.addEventListener('resize', handleResize);
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
+
+{% include 'footer.html' %}

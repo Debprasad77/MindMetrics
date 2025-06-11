@@ -1,0 +1,328 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindMetrics - Mental Health Blog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-top: 5.5rem;
+        }
+        .blog-hero {
+            background: linear-gradient(135deg,rgb(223, 100, 78) 0%,rgb(76, 34, 190) 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        .blog-hero h1 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .blog-hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        
+
+        .blog-container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
+        .blog-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            height: 100%;
+        }
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .blog-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+        .blog-content {
+            padding: 1.5rem;
+        }
+        .blog-date {
+            color: #4e73df;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .blog-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+        .blog-excerpt {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+        .blog-author {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        .author-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 0.75rem;
+        }
+        .author-name {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #2d3748;
+        }
+        .category-badge {
+            background-color: #e1effe;
+            color: #2563eb;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        .search-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        .sidebar-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        .sidebar-title {
+            color: #4e73df;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .tag {
+            display: inline-block;
+            background-color: #f0f7ff;
+            color: #2563eb;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .tag:hover {
+            background-color: #2563eb;
+            color: white;
+            text-decoration: none;
+        }
+        .pagination .page-item.active .page-link {
+            background-color: #4e73df;
+            border-color: #4e73df;
+            color: white;
+        }
+        .pagination .page-link {
+            color: #4e73df;
+        }
+       
+      
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    
+    <!-- Hero Section -->
+    <section class="blog-hero">
+        <div class="container">
+            <h1>MindMetrics Blog</h1>
+            <p>Insights, tips, and research about mental health and wellness</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="blog-container">
+        <div class="row">
+            <!-- Blog Posts Column -->
+            <div class="col-lg-8">
+                <!-- Search Section -->
+                <div class="search-section">
+                    <form class="row g-2">
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" placeholder="Search articles...">
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary w-100">Search</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Blog Posts -->
+                <div class="row g-4">
+                    <!-- Blog Post 1 -->
+                    <div class="col-md-6" >
+                        <a href="https://kidshealth.org/en/teens/anxiety-tips.html" target="_blank" class="text-decoration-none text-dark">
+                        <div class="blog-card">
+                            <img src="{% static 'images/blog1.jpg' %}" alt="Managing Anxiety" class="blog-img">
+                            <div class="blog-content">
+                                <span class="category-badge">Anxiety</span>
+                                <span class="blog-date">april 15, 2025</span>
+                                <h3 class="blog-title">5 Effective Techniques for Managing Anxiety</h3>
+                                <p class="blog-excerpt">Discover practical strategies to reduce anxiety and improve your daily mental wellbeing...</p>
+                                <div class="blog-author">
+                                    <img src="{% static 'images/author.jpeg' %}" alt="Dr. Sarah Johnson" class="author-img">
+                                    <span class="author-name">Dr. Sarah Johnson</span>
+                                </div>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+
+                    <!-- Blog Post 2 -->
+                    <div class="col-md-6">
+                        <a href="https://www.mindful.org/the-science-of-mindfulness/" target="_blank" class="text-decoration-none text-dark">
+                        <div class="blog-card">
+                            <img src="{% static 'images/blog2.jpg' %}" alt="Mindfulness Meditation" class="blog-img">
+                            <div class="blog-content">
+                                <span class="category-badge">Mindfulness</span>
+                                <span class="blog-date">April 16, 2025</span>
+                                <h3 class="blog-title">The Science Behind Mindfulness Meditation</h3>
+                                <p class="blog-excerpt">How regular meditation practice can physically change your brain and reduce stress...</p>
+                                <div class="blog-author">
+                                    <img src="{% static 'images/author.jpeg' %}" alt="Michael Chen" class="author-img">
+                                    <span class="author-name">Michael Chen</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    </div>
+
+                    <!-- Blog Post 3 -->
+                    <div class="col-md-6">
+                        <a href="https://www.nhslanarkshire.scot.nhs.uk/pulse-vital-connection-between-sleep-and-mental-health/#:~:text=Quality%20sleep%20is%20essential%20for,memories%20and%20repair%20the%20body." target="_blank" class="text-decoration-none text-dark">
+                        <div class="blog-card">
+                            <img src="{% static 'images/blog3.jpg' %}" alt="Sleep and Mental Health" class="blog-img">
+                            <div class="blog-content">
+                                <span class="category-badge">Sleep</span>
+                                <span class="blog-date">April 18, 2025</span>
+                                <h3 class="blog-title">The Vital Connection Between Sleep and Mental Health</h3>
+                                <p class="blog-excerpt">Understanding how sleep quality directly affects your emotional and psychological wellbeing...</p>
+                                <div class="blog-author">
+                                    <img src="{% static 'images/author.jpeg' %}" alt="Dr. Priya Patel" class="author-img">
+                                    <span class="author-name">Dr. Priya Patel</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    </div>
+
+                    <!-- Blog Post 4 -->
+                    <div class="col-md-6">
+                        <a href="https://www.verywellmind.com/why-and-how-to-do-a-digital-detox-4771321" target="_blank" class="text-decoration-none text-dark">
+                        <div class="blog-card">
+                            <img src="{% static 'images/blog4.jpg' %}" alt="Digital Detox" class="blog-img">
+                            <div class="blog-content">
+                                <span class="category-badge">Digital Wellness</span>
+                                <span class="blog-date">April 25, 2025</span>
+                                <h3 class="blog-title">Why You Need a Digital Detox and How to Do It Right</h3>
+                                <p class="blog-excerpt">Practical steps to reduce screen time and improve your mental focus and relationships...</p>
+                                <div class="blog-author">
+                                    <img src="{% static 'images/author.jpeg' %}" alt="Emily Rodriguez" class="author-img">
+                                    <span class="author-name">Emily Rodriguez</span>
+                                </div>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <nav aria-label="Blog pagination">
+                    <ul class="pagination justify-content-center mt-4">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Sidebar Column -->
+            <div class="col-lg-4">
+                <!-- About Card -->
+                <div class="sidebar-card">
+                    <h4 class="sidebar-title">About The Blog</h4>
+                    <p>The MindMetrics blog provides evidence-based mental health information, practical wellness tips, and personal stories to support your mental health journey.</p>
+                </div>
+
+                <!-- Categories Card -->
+                <div class="sidebar-card">
+                    <h4 class="sidebar-title">Categories</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-decoration-none">Anxiety (12)</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none">Depression (8)</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none">Mindfulness (15)</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none">Relationships (7)</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none">Sleep (9)</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none">Digital Wellness (5)</a></li>
+                    </ul>
+                </div>
+
+                <!-- Tags Card -->
+                <div class="sidebar-card">
+                    <h4 class="sidebar-title">Popular Tags</h4>
+                    <div>
+                        <a href="#" class="tag">self-care</a>
+                        <a href="#" class="tag">stress</a>
+                        <a href="#" class="tag">meditation</a>
+                        <a href="#" class="tag">therapy</a>
+                        <a href="#" class="tag">coping</a>
+                        <a href="#" class="tag">habits</a>
+                        <a href="#" class="tag">productivity</a>
+                        <a href="#" class="tag">focus</a>
+                    </div>
+                </div>
+
+                <!-- Newsletter Card -->
+                <div class="sidebar-card">
+                    <h4 class="sidebar-title">Subscribe</h4>
+                    <p>Get mental health tips delivered to your inbox</p>
+                    <form>
+                        <div class="mb-3">
+                            <input type="email" class="form-control" placeholder="Your email address">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

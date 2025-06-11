@@ -1,0 +1,150 @@
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #1e40af;
+}
+
+
+
+/* Fix navbar to top */
+.navbar {
+    width: 100%;
+    z-index: 1000;
+}
+/* Ensure proper mobile behavior */
+.navbar-toggler {
+    border: none;
+}
+
+
+
+/* Profile Page Specific Styles */
+.bio-text {
+  white-space: pre-line;
+  line-height: 1.8;
+}
+
+.account-stats {
+  background: #f8f9fa;
+  border-radius: 15px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.account-stats:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+/* Settings Page Specific Styles */
+#id_bio {
+  height: 150px;
+  resize: none;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #1a4b8c;
+}
+
+.form-control:focus {
+  border-color: #2e84db;
+  box-shadow: 0 0 0 0.25rem rgba(46, 132, 219, 0.25);
+}
+
+
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+  }
+  
+  .bg-gradient-custom {
+    background: linear-gradient(to bottom right, #fbeff2, white, #fbeff2);
+    width: 100vw; /* Full viewport width */
+    margin-left: calc(-50vw + 50%); /* Center alignment trick */
+  }
+
+  .container {
+    max-width: 100%;
+    padding: 0 15px; /* Add padding only on smaller screens */
+  }
+
+
+
+  .stress-button-container {
+    width: 200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  /* Full-width button */
+  .stress-button {
+    width: 100%;
+    font-weight: bold;
+  }
+
+
+  
+
+/* Custom Modal Styling */
+#assessmentModal .modal-content {
+    border-radius: 10px;
+    border: none;
+  }
+  
+  #assessmentModal .modal-header {
+    border-bottom: 2px solid #3498db;
+  }
+  
+  #assessmentModal .form-container {
+    padding: 20px;
+    background: white;
+  }
+  
+  #assessmentModal .field-required::after {
+    content: " *";
+    color: #e74c3c;
+  }
+  
+  #assessmentModal .form-control:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+  }
+
+
+
+
+
+
+/* Responsive styles */
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+@media (max-width: 768px) {
+    .main-heading {
+        font-size: 2.5rem;
+    }
+    .sub-heading {
+        font-size: 1.2rem;
+    }
+}
+@media (min-width: 1200px) {
+    .container {
+      padding: 0 2rem; /* Larger padding for big screens */
+    }
+  }
