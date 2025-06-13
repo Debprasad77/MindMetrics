@@ -1,4 +1,4 @@
-# **MindMetrics: AI-Powered Student Mental Health Prediction System**
+🧠 **MindMetrics: AI-Powered Student Mental Health Prediction System**
 
 ![MindMetrics Banner](media/Banner.png)
 
