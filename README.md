@@ -2,9 +2,29 @@
 
 ![MindMetrics Banner](media/Banner.png)
 
+---
+
+<p align="center">
+  <a href="https://mind-metrics-v1.onrender.com/">
+    <img src="media/preview.gif" alt="demo gif">
+  </a>
+</p>
+
+---
+
+
 ## **🌟 Introduction**
 **MindMetrics** is an advanced AI system developed by our team to predict **depression, anxiety, and stress levels** in students using machine learning. Our comprehensive solution helps educational institutions identify at-risk students early and provide data-driven interventions.
 
+---
+
+## 🚀 Live Demo
+
+🔗 [**Click Here to Explore It Visulaly**](https://mind-metrics-v1.onrender.com/)
+
+📱 Optimized for all screen sizes — mobile, tablet, and desktop
+
+---
 🔹 **Key Advantages:**
 - **Triple Prediction Model:** Simultaneously assesses depression, anxiety, and stress
 - **Early Intervention:** Identifies warning signs before crises occur
