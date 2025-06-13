@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
+from cloudinary.models import CloudinaryField
+
 
 class UserResponse(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -39,10 +41,12 @@ class Prediction(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(
-        upload_to='profile_pics',
-        default='profile_pics/default-avatar.png'
-    )
+    # image = models.ImageField(
+    #     upload_to='profile_pics',
+    #     default='profile_pics/default-avatar.png'
+        
+    # )
+    image = CloudinaryField('image', folder='profile_image/') 
     bio = models.TextField(max_length=500, blank=True)
     location = models.CharField(max_length=100, blank=True)
 

@@ -1,3 +1,50 @@
 .venv
 
 .env
+
+updates.txt
+
+build.sh
+render.yaml
+
+
+
+
+
+# Ignore Python cache files
+__pycache__/
+# Ignore compiled Python files
+*.pyc
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+# Ignore virtual environment directories
+# Ignore log files
+*.log
+# Ignore coverage reports
+
+.coverage
+# Ignore test output files
+*.xml
+
+# Ignore build directories
+build/
+# Ignore distribution directories
+dist/
+# Ignore egg-info directories   
+*.egg-info/
+# Ignore pipenv files
+Pipfile.lock
+# Ignore poetry files
+poetry.lock
+# Ignore IDE/editor specific files
+.vscode/
+.idea/
+
+# Ignore macOS specific files
+.DS_Store
+# Ignore Windows specific files
+Thumbs.db
+# Ignore temporary files
+*.tmp
+# Ignore backup files
+*.bak
