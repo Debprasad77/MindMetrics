@@ -1,4 +1,4 @@
-#  **🧠 MindMetrics: Student Mental Health Prediction System**
+## **🧠 MindMetrics: Student Mental Health Prediction System**
 
 ![MindMetrics Banner](media/Banner.png)
 
