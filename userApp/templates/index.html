@@ -15,11 +15,12 @@
         /* Original Styles */
         .gradient-bg {
             /* background: linear-gradient(135deg, #2e84db 0%, #1a4b8c 100%); */ 
-            background: linear-gradient(135deg,rgb(83, 223, 78) 0%, #224abe 100%)
+            /* background: linear-gradient(135deg,rgb(83, 223, 78) 0%, #224abe 100%) */
+            background: linear-gradient(135deg, #2af598 0%, #7367ff 100%);  
         }
         
         body {
-            background: #f5f9ff;
+           background: linear-gradient(to right, #f5fffb, #ebfff8);  
         }
 
         .feature-card {
@@ -135,13 +136,14 @@
         #loginRequiredModal .btn-primary:hover::before {
             left: 100%;
         }
-    
+
+     
     </style>
 </head>
 <body>
 
     <!-- Hero Section -->
-    <section class="gradient-bg">
+    <section class="gradient-bg" style="min-height: 100vh;">
         <div class="container py-5">
             <div class="row align-items-center py-5">
                 <div class="col-lg-6 text-center text-lg-start text-white">
@@ -164,6 +166,35 @@
                 </div>
             </div>
         </div>
+        <!-- Awareness Section Inside Hero -->
+<div class="row mt-2 p-4 rounded-4 bg-white bg-opacity-10 backdrop-blur-sm">
+    <div class="col-lg-6 mb-4 mb-lg-0 d-flex align-items-center justify-content-center">
+        <div class="position-relative w-100">
+            <img src="{% static 'images/awarness.jpg' %}" alt="Awareness" class="img-fluid rounded-4 shadow" style="max-height: 360px; object-fit: cover;">
+        </div>
+    </div>
+    <div class="col-lg-6 text-white">
+        <h2 class="fw-bold mb-3">Why <span class="highlight-text">Mental Health</span> Matters ??</h2>
+        <p class="mb-4">
+            Mental well-being isn’t just about avoiding illness — it’s about living with clarity, energy, and emotional balance. Early awareness leads to stronger mental resilience and better life decisions.
+        </p>
+        <div class="d-flex flex-column gap-2">
+            <div class="d-flex align-items-start">
+                <i class="bi bi-heart-pulse-fill text-success fs-5 me-3"></i>
+                <span>Understand your emotional and psychological state</span>
+            </div>
+            <div class="d-flex align-items-start">
+                <i class="bi bi-lightning-charge-fill text-warning fs-5 me-3"></i>
+                <span>Take proactive steps before stress takes over</span>
+            </div>
+            <div class="d-flex align-items-start">
+                <i class="bi bi-star-fill text-info fs-5 me-3"></i>
+                <span>Build stronger mental and emotional resilience</span>
+            </div>
+        </div>
+    </div>
+</div>
+
     </section>
 
     <!-- Features Grid -->
@@ -343,7 +374,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content p-4">
                 <div class="modal-header border-0">
-                    <h2 class="modal-title fw-bold">Mental Health Assessment</h2>
+                    <h2 class="modal-title fw-bold">🩺 Mental Health Assessment 🩺</h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
