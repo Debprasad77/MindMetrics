@@ -2,15 +2,7 @@
 
 ![MindMetrics Banner](media/Banner.png)
 
----
 
-<p align="center">
-  <a href="https://mind-metrics-v1.onrender.com/">
-    <img src="media/preview.gif" alt="demo gif">
-  </a>
-</p>
-
----
 
 
 ## **🌟 Introduction**
@@ -21,6 +13,16 @@
 ## 🚀 Live Demo
 
 🔗 [**Click Here to Explore It Visulaly**](https://mind-metrics-v1.onrender.com/)
+
+---
+
+<p align="center">
+  <a href="https://mind-metrics-v1.onrender.com/">
+    <img src="media/preview.gif" alt="demo gif">
+  </a>
+</p>
+
+---
 
 📱 Optimized for all screen sizes — mobile, tablet, and desktop
 
