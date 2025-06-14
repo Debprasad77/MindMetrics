@@ -8,6 +8,16 @@
 ## **🌟 Introduction**
 **MindMetrics** is an advanced AI system developed by our team to predict **depression, anxiety, and stress levels** in students using machine learning. Our comprehensive solution helps educational institutions identify at-risk students early and provide data-driven interventions.
 
+🔹 Why MindMetrics?
+
+    Early detection of stress, anxiety, and depression.
+
+    Data-driven insights for counselors and educators.
+
+    Customizable surveys for different student groups.
+
+    Secure, privacy-focused design.
+
 ---
 
 ## 🚀 Live Demo
